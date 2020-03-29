@@ -26,7 +26,7 @@ class SignUp extends Component {
     )
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
 
     const { displayName, email, password, confirmPassword } = this.state;
@@ -37,18 +37,15 @@ class SignUp extends Component {
     }
 
     try {
-      (async () =>{
-        const { user } = await auth.createUserWithEmailAndPassword(email, password);
-        await createUserProfileDocument(user, { displayName });
+      const { user } = await auth.createUserWithEmailAndPassword(email, password);
+      await createUserProfileDocument(user, { displayName });
 
-        this.setState({
-          displayName: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        })
-      })()
-
+      this.setState({
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      })
     } catch(error) {
       console.error(error)
     }
